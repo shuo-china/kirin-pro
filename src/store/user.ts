@@ -3,7 +3,7 @@ import { StoreId } from "@/utils/enums";
 import { getToken, removeToken, setToken } from "../utils/token";
 import { getUserInfoApi, loginApi, LoginRequestData } from "../api/user";
 
-interface UserInfo {
+export interface UserInfo {
   username: string;
 }
 
@@ -33,6 +33,7 @@ export const useUserStore = defineStore(StoreId.User, () => {
   };
 
   return {
+    userInfo,
     hasUserInfo,
     login,
     getUserInfo,

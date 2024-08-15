@@ -1,10 +1,10 @@
 import { RouteRecordRaw } from "vue-router";
 import { resolve } from "path-browserify";
 import { routes } from "@/router";
-import { UserInfo } from "@/store/user";
+import { UserInfo, useUserStore } from "@/store/user";
 import access from "@/router/access";
 
-export type Menu = {
+type Menu = {
   title: string;
   icon: string;
   path: string;
@@ -15,7 +15,7 @@ export type Menu = {
   __isFlattened: boolean;
 };
 
-export function generateMenus(userInfo: Nullable<UserInfo>) {
+function generateMenus(userInfo: Nullable<UserInfo>) {
   if (!userInfo) {
     return [];
   }
@@ -129,4 +129,26 @@ function getActiveMenuPath(key: string, menus: Menu[]) {
 function getActiveMenuKeyPath(key: string, menus: Menu[]) {
   const menuPath = getActiveMenuPath(key, menus);
   return menuPath.map((m) => m.key);
+}
+
+export function useMenus() {
+  const userStore = useUserStore();
+
+  const menus = computed(() => generateMenus(userStore.userInfo));
+
+  const route = useRoute();
+
+  const updateExpandedKeys = () => {};
+
+  watch(
+    () => route.name,
+    () => {
+      updateExpandedKeys();
+    },
+    { immediate: true }
+  );
+
+  return {
+    menus,
+  };
 }

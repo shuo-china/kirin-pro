@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
-import { StoreId } from "@/utils/enums";
+import { LayoutMode, StoreId } from "@/utils/enums";
 
 export const useAppStore = defineStore(StoreId.App, () => {
-  return {};
+  const layout = ref(LayoutMode.Side);
+
+  return { layout };
 });
