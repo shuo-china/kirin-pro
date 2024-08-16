@@ -1,7 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import { generateMenus } from "./shared";
-
-const Layout = () => import("@/layouts/index.vue");
+import Layout from "@/layouts/index.vue";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -49,118 +47,36 @@ export const routes: RouteRecordRaw[] = [
         component: () => import("@/pages/home/index.vue"),
         meta: {
           title: "首页",
+          icon: "house",
         },
       },
     ],
   },
   {
-    path: "/table",
+    path: "/demo",
     component: Layout,
-    redirect: "/table/element-plus",
-    name: "Table",
+    redirect: "/demo/list",
     meta: {
-      title: "表格",
-      elIcon: "Grid",
+      title: "示例展示",
+      icon: "files",
     },
     children: [
       {
-        path: "element-plus",
-        component: () => import("@/pages/home/index.vue"),
-        name: "ElementPlus",
+        path: "list",
+        name: "List",
+        component: () => import("@/pages/demo/list.vue"),
         meta: {
-          title: "Element Plus",
+          title: "列表示例",
+          icon: "document",
         },
       },
       {
-        path: "vxe-table",
-        component: () => import("@/pages/home/index.vue"),
-        name: "VxeTable",
+        path: "form",
+        name: "Form",
+        component: () => import("@/pages/demo/form.vue"),
         meta: {
-          title: "Vxe Table",
-        },
-      },
-    ],
-  },
-  {
-    path: "/menu",
-    component: Layout,
-    redirect: "/menu/menu1",
-    name: "Menu",
-    meta: {
-      title: "多级路由",
-      svgIcon: "menu",
-    },
-    children: [
-      {
-        path: "menu1",
-        component: () => import("@/pages/home/index.vue"),
-        redirect: "/menu/menu1/menu1-1",
-        name: "Menu1",
-        meta: {
-          title: "menu1",
-        },
-        children: [
-          {
-            path: "menu1-1",
-            component: () => import("@/pages/home/index.vue"),
-            name: "Menu1-1",
-            meta: {
-              title: "menu1-1",
-            },
-            children: [
-              {
-                path: "menu1-1-1",
-                component: () => import("@/pages/home/index.vue"),
-                name: "Menu1-1-1",
-                meta: {
-                  title: "menu1-1-1",
-                },
-              },
-            ],
-          },
-          {
-            path: "menu1-2",
-            component: () => import("@/pages/home/index.vue"),
-            redirect: "/menu/menu1/menu1-2/menu1-2-1",
-            name: "Menu1-2",
-            meta: {
-              title: "menu1-2",
-            },
-            children: [
-              {
-                path: "menu1-2-1",
-                component: () => import("@/pages/home/index.vue"),
-                name: "Menu1-2-1",
-                meta: {
-                  title: "menu1-2-1",
-                },
-              },
-              {
-                path: "menu1-2-2",
-                component: () => import("@/pages/home/index.vue"),
-                name: "Menu1-2-2",
-                meta: {
-                  title: "menu1-2-2",
-                },
-              },
-            ],
-          },
-          {
-            path: "menu1-3",
-            component: () => import("@/pages/home/index.vue"),
-            name: "Menu1-3",
-            meta: {
-              title: "menu1-3",
-            },
-          },
-        ],
-      },
-      {
-        path: "menu2",
-        component: () => import("@/pages/home/index.vue"),
-        name: "Menu2",
-        meta: {
-          title: "menu2",
+          title: "表单示例",
+          icon: "tickets",
         },
       },
     ],

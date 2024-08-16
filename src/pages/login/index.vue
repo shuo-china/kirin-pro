@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/store/user";
-import { ApiError } from "~/src/utils/request";
+import { ApiError } from "@/utils/request";
 
 const userStore = useUserStore();
 const router = useRouter();

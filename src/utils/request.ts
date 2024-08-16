@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { getToken } from "@/utils/token";
 import { useUserStore } from "@/store/user";
+import config from "@/config";
 
 export class ApiError extends Error {
   constructor(
@@ -13,13 +13,13 @@ export class ApiError extends Error {
 }
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: config.apiBaseURL,
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = getToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const userStore = useUserStore();
+  if (userStore.token) {
+    config.headers.Authorization = `Bearer ${userStore.token}`;
   }
   return config;
 });

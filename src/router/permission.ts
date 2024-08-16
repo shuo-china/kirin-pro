@@ -1,6 +1,5 @@
 import router from "@/router";
 import access from "@/router/access";
-import { getToken } from "@/utils/token";
 import { useUserStore } from "@/store/user";
 import { isTokenInvalidError } from "@/utils/request";
 
@@ -8,9 +7,8 @@ const whiteList = ["/login"];
 
 router.beforeEach(async (to, _from, next) => {
   const userStore = useUserStore();
-  const token = getToken();
 
-  if (!token) {
+  if (!userStore.token) {
     if (whiteList.includes(to.path)) {
       return next();
     } else {
@@ -33,7 +31,7 @@ router.beforeEach(async (to, _from, next) => {
     }
   }
 
-  if (!access(userStore.userInfo!, to)) {
+  if (to.path !== "/403" && !access(userStore.userInfo!, to)) {
     return next("/403");
   }
 

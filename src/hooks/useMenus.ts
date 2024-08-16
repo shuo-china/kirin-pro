@@ -4,9 +4,9 @@ import { routes } from "@/router";
 import { UserInfo, useUserStore } from "@/store/user";
 import access from "@/router/access";
 
-type Menu = {
+export type Menu = {
   title: string;
-  icon: string;
+  icon?: string;
   path: string;
   level: number;
   parent: Nullable<Menu>;
@@ -70,7 +70,7 @@ function generateMenuByRoute(
 
   return {
     title: meta?.title || path,
-    icon: "",
+    icon: meta?.icon,
     path: resolve(parentMenu?.path || "", path),
     level,
     key: name as string,
@@ -113,42 +113,32 @@ function getActiveMenu(key: string, menus: Menu[]) {
   return null;
 }
 
-function getActiveMenuPath(key: string, menus: Menu[]) {
+function getActiveMenuPath(activeMenu: Nullable<Menu>) {
   const path: Menu[] = [];
 
-  let currentMenu = getActiveMenu(key, menus);
-
-  while (currentMenu) {
-    path.unshift(currentMenu);
-    currentMenu = currentMenu.parent;
+  while (activeMenu) {
+    path.unshift(activeMenu);
+    activeMenu = activeMenu.parent;
   }
 
   return path;
 }
 
-function getActiveMenuKeyPath(key: string, menus: Menu[]) {
-  const menuPath = getActiveMenuPath(key, menus);
-  return menuPath.map((m) => m.key);
-}
-
 export function useMenus() {
+  const route = useRoute();
   const userStore = useUserStore();
 
   const menus = computed(() => generateMenus(userStore.userInfo));
 
-  const route = useRoute();
-
-  const updateExpandedKeys = () => {};
-
-  watch(
-    () => route.name,
-    () => {
-      updateExpandedKeys();
-    },
-    { immediate: true }
+  const activeMenu = computed(() =>
+    getActiveMenu(route.name as string, menus.value)
   );
+
+  const ativeMenuPath = computed(() => getActiveMenuPath(activeMenu.value));
 
   return {
     menus,
+    activeMenu,
+    ativeMenuPath,
   };
 }
