@@ -1,35 +1,35 @@
-import { defineStore } from "pinia";
-import { StoreId } from "@/utils/enums";
-import { getUserInfoApi, loginApi, LoginRequestData } from "@/api/user";
-import { useLocalStorage } from "@vueuse/core";
-import { TOKEN_KEY } from "@/utils/constants";
+import { defineStore } from 'pinia'
+import { StoreId } from '@/utils/enums'
+import { getUserInfoApi, loginApi, LoginRequestData } from '@/api/user'
+import { useLocalStorage } from '@vueuse/core'
+import { TOKEN_KEY } from '@/utils/constants'
 
 export interface UserInfo {
-  username: string;
+  username: string
 }
 
 export const useUserStore = defineStore(StoreId.User, () => {
-  const token = useLocalStorage<Nullable<string>>(TOKEN_KEY, null);
-  const userInfo = ref<Nullable<UserInfo>>(null);
+  const token = useLocalStorage<Nullable<string>>(TOKEN_KEY, null)
+  const userInfo = ref<Nullable<UserInfo>>(null)
 
-  const hasUserInfo = computed(() => userInfo.value !== null);
+  const hasUserInfo = computed(() => userInfo.value !== null)
 
   const login = async (data: LoginRequestData) => {
-    const result = await loginApi(data);
-    token.value = result.access_token;
-  };
+    const result = await loginApi(data)
+    token.value = result.access_token
+  }
 
   const getUserInfo = async () => {
-    const result = await getUserInfoApi();
+    const result = await getUserInfoApi()
     userInfo.value = {
-      username: result.username,
-    };
-  };
+      username: result.username
+    }
+  }
 
   const logout = () => {
-    token.value = null;
-    userInfo.value = null;
-  };
+    token.value = null
+    userInfo.value = null
+  }
 
   return {
     token,
@@ -37,6 +37,6 @@ export const useUserStore = defineStore(StoreId.User, () => {
     hasUserInfo,
     login,
     getUserInfo,
-    logout,
-  };
-});
+    logout
+  }
+})

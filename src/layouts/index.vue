@@ -5,13 +5,13 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from "@/store/app";
-import { LayoutMode } from "@/utils/enums";
-import Side from "./Side.vue";
-import Top from "./Top.vue";
-import Mix from "./Mix.vue";
+import { useAppStore } from '@/store/app'
+import { LayoutMode } from '@/utils/enums'
+import Side from './Side.vue'
+import Top from './Top.vue'
+import Mix from './Mix.vue'
 
-const appStore = useAppStore();
+const appStore = useAppStore()
 </script>
 
 <style lang="scss" scoped></style>

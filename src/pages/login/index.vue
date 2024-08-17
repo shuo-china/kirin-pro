@@ -8,36 +8,36 @@
         <el-input v-model="form.password" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleSubmit">确定</el-button>
+        <el-button type="primary" @click="handleSubmit"> 确定 </el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/store/user";
-import { ApiError } from "@/utils/request";
+import { useUserStore } from '@/store/user'
+import { ApiError } from '@/utils/request'
 
-const userStore = useUserStore();
-const router = useRouter();
+const userStore = useUserStore()
+const router = useRouter()
 
 const form = reactive({
-  username: "15150020157",
-  password: "1",
-});
+  username: '15150020157',
+  password: '1'
+})
 
 const handleSubmit = () => {
   userStore
     .login(form)
     .then(() => {
-      router.push("/");
+      router.push('/')
     })
-    .catch((err) => {
+    .catch(err => {
       if (err instanceof ApiError) {
-        ElMessage.error(err.data.message);
+        ElMessage.error(err.data.message)
       }
-    });
-};
+    })
+}
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,11 +1,11 @@
-import "vue-router";
+import 'vue-router'
 
-export {};
+export {}
 
-declare module "vue-router" {
+declare module 'vue-router' {
   interface RouteMeta {
-    title?: string;
-    icon?: string;
-    hideInMenu?: boolean;
+    title?: string
+    icon?: string
+    hideInMenu?: boolean
   }
 }

@@ -1,6 +1,6 @@
-type Nullable<T> = null | T;
+type Nullable<T> = null | T
 
 type ApiErrorData = {
-  code: string;
-  message: string;
-};
+  code: string
+  message: string
+}

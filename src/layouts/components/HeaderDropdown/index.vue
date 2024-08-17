@@ -3,15 +3,15 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/store/user";
+import { useUserStore } from '@/store/user'
 
-const userStore = useUserStore();
-const router = useRouter();
+const userStore = useUserStore()
+const router = useRouter()
 
 const handleLogout = () => {
-  userStore.logout();
-  router.push("/login");
-};
+  userStore.logout()
+  router.push('/login')
+}
 </script>
 
 <style lang="scss" scoped></style>

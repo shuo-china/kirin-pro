@@ -14,17 +14,17 @@
 </template>
 
 <script setup lang="ts">
-import { Menu } from "@/hooks/useMenus";
-import MenuItem from "./MenuItem.vue";
+import { Menu } from '@/hooks/useMenus'
+import MenuItem from './MenuItem.vue'
 
-const attrs = useAttrs();
+const attrs = useAttrs()
 
 interface Props {
-  menus: Menu[];
-  activeMenu: Nullable<Menu>;
+  menus: Menu[]
+  activeMenu: Nullable<Menu>
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <style lang="scss" scoped></style>

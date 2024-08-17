@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { useUserStore } from "@/store/user";
-import config from "@/config";
+import axios, { AxiosRequestConfig } from 'axios'
+import { useUserStore } from '@/store/user'
+import config from '@/config'
 
 export class ApiError extends Error {
   constructor(
@@ -8,54 +8,50 @@ export class ApiError extends Error {
     public status: number,
     public data: ApiErrorData
   ) {
-    super(message);
+    super(message)
   }
 }
 
 const axiosInstance = axios.create({
-  baseURL: config.apiBaseURL,
-});
+  baseURL: config.apiBaseURL
+})
 
-axiosInstance.interceptors.request.use((config) => {
-  const userStore = useUserStore();
+axiosInstance.interceptors.request.use(config => {
+  const userStore = useUserStore()
   if (userStore.token) {
-    config.headers.Authorization = `Bearer ${userStore.token}`;
+    config.headers.Authorization = `Bearer ${userStore.token}`
   }
-  return config;
-});
+  return config
+})
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  response => response,
+  error => {
     // http status code !2xx
-    const { response, message } = error;
+    const { response, message } = error
     if (response && response.data) {
       if (isTokenInvalid(response.status, response.data.code)) {
-        useUserStore().logout();
-        location.reload();
+        useUserStore().logout()
+        location.reload()
       }
 
-      return Promise.reject(
-        new ApiError(message, response.status, response.data)
-      );
+      return Promise.reject(new ApiError(message, response.status, response.data))
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 function request<T = any, R = any>(config: AxiosRequestConfig<R>): Promise<T> {
-  return axiosInstance(config).then((res) => res.data);
+  return axiosInstance(config).then(res => res.data)
 }
 
 function isTokenInvalid(status: number, code: string) {
-  return status === 401 && code === "TOKEN_INVALID";
+  return status === 401 && code === 'TOKEN_INVALID'
 }
 
 export function isTokenInvalidError(error: unknown) {
-  return (
-    error instanceof ApiError && isTokenInvalid(error.status, error.data.code)
-  );
+  return error instanceof ApiError && isTokenInvalid(error.status, error.data.code)
 }
 
-export default request;
+export default request
