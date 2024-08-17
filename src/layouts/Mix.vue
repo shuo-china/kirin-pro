@@ -19,10 +19,11 @@ import { useMenus } from '@/hooks/useMenus'
 import AppMain from '@/layouts/components/AppMain.vue'
 import Menu from '@/layouts/components/Menu/index.vue'
 
-const { menus, activeMenu, ativeMenuPath } = useMenus()
+const { menus, activeMenu, activeMenuPath } = useMenus()
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const firstLevelMenus = computed(() => menus.value.map(({ children, ...m }) => m))
-const firstLevelActiveMenu = computed(() => ativeMenuPath.value[0])
+const firstLevelActiveMenu = computed(() => activeMenuPath.value[0])
 
 const secondLevelMenus = computed(() => firstLevelActiveMenu.value?.children || [])
 </script>

@@ -1,5 +1,8 @@
-import { defineConfig, presetAttributify, presetUno } from 'unocss'
+import { defineConfig, presetUno } from 'unocss'
 
 export default defineConfig({
-  presets: [presetAttributify(), presetUno()]
+  presets: [
+    // presetAttributify(),
+    presetUno()
+  ]
 })

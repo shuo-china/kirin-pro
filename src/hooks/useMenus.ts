@@ -125,11 +125,11 @@ export function useMenus() {
 
   const activeMenu = computed(() => getActiveMenu(route.name as string, menus.value))
 
-  const ativeMenuPath = computed(() => getActiveMenuPath(activeMenu.value))
+  const activeMenuPath = computed(() => getActiveMenuPath(activeMenu.value))
 
   return {
     menus,
     activeMenu,
-    ativeMenuPath
+    activeMenuPath
   }
 }

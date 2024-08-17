@@ -1,16 +1,14 @@
 <template>
-  <el-scrollbar>
-    <el-menu
-      class="border-none"
-      :default-active="activeMenu?.path"
-      :unique-opened="true"
-      :collapse-transition="false"
-      router
-      v-bind="attrs"
-    >
-      <MenuItem v-for="menu in menus" :key="menu.path" :menu="menu"></MenuItem>
-    </el-menu>
-  </el-scrollbar>
+  <el-menu
+    class="border-none"
+    :default-active="activeMenu?.path"
+    :unique-opened="true"
+    :collapse-transition="false"
+    router
+    v-bind="attrs"
+  >
+    <MenuItem v-for="menu in menus" :key="menu.path" :menu="menu"></MenuItem>
+  </el-menu>
 </template>
 
 <script setup lang="ts">

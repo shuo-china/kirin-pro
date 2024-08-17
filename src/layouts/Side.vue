@@ -1,10 +1,18 @@
 <template>
-  <el-container class="h-full">
+  <el-container class="h-full bg-white/900">
     <el-aside class="w-50">
-      <Menu :menus="menus" :active-menu="activeMenu" />
+      <Sidebar>
+        <Menu :menus="menus" :active-menu="activeMenu"></Menu>
+      </Sidebar>
     </el-aside>
     <el-container>
-      <el-header>Header</el-header>
+      <el-header class="h-14 px-0">
+        <NavigationBar>
+          <template #left>
+            <Breadcrumb :breadcrumbs="activeMenuPath"></Breadcrumb>
+          </template>
+        </NavigationBar>
+      </el-header>
       <el-main>
         <AppMain />
       </el-main>
@@ -16,8 +24,11 @@
 import { useMenus } from '@/hooks/useMenus'
 import AppMain from '@/layouts/components/AppMain.vue'
 import Menu from '@/layouts/components/Menu/index.vue'
+import Sidebar from '@/layouts/components/Sidebar/index.vue'
+import NavigationBar from '@/layouts/components/NavigationBar/index.vue'
+import Breadcrumb from '@/layouts/components/Breadcrumb/index.vue'
 
-const { menus, activeMenu } = useMenus()
+const { menus, activeMenu, activeMenuPath } = useMenus()
 </script>
 
 <style lang="scss" scoped></style>

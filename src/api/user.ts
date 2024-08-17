@@ -18,7 +18,7 @@ export function loginApi(data: LoginRequestData) {
 }
 
 export interface UserInfoResponseData {
-  username: string
+  name: string
 }
 
 export function getUserInfoApi() {
