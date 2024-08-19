@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <router-link to="/bar">home</router-link>
-    <div @click="layout = LayoutMode.Top">top</div>
-    <div @click="layout = LayoutMode.Side">side</div>
-    <div @click="layout = LayoutMode.Mix">mix</div>
+  <div class="flex gap-4">
+    <button @click="layout = LayoutMode.Top">top</button>
+    <button @click="layout = LayoutMode.Side">side</button>
+    <button @click="layout = LayoutMode.Mix">mix</button>
   </div>
 </template>
 

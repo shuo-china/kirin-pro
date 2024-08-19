@@ -1,7 +1,7 @@
 <template>
   <el-breadcrumb>
     <el-breadcrumb-item
-      v-for="breadcrumb in breadcrumbs"
+      v-for="breadcrumb in menuStore.activeMenuPath"
       :key="breadcrumb.key"
       :to="{ path: breadcrumb.path }"
       >{{ breadcrumb.title }}</el-breadcrumb-item
@@ -10,13 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { Menu } from '@/hooks/useMenus'
+import { useMenuStore } from '@/store/menu'
 
-interface Props {
-  breadcrumbs: Menu[]
-}
-
-defineProps<Props>()
+const menuStore = useMenuStore()
 </script>
 
 <style lang="scss" scoped></style>

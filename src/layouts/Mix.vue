@@ -1,13 +1,13 @@
 <template>
   <el-container class="h-full">
-    <el-header>
-      <Menu :menus="firstLevelMenus" :active-menu="firstLevelActiveMenu" mode="horizontal" />
+    <el-header class="h-auto px-0">
+      <NavigationBar />
     </el-header>
     <el-container>
-      <el-aside v-if="secondLevelMenus" width="200px">
-        <Menu :menus="secondLevelMenus" :active-menu="activeMenu" />
+      <el-aside v-if="secondLevelMenus.length" class="w-auto overflow-visible">
+        <Sidebar />
       </el-aside>
-      <el-main>
+      <el-main class="p-0">
         <AppMain />
       </el-main>
     </el-container>
@@ -15,17 +15,13 @@
 </template>
 
 <script setup lang="ts">
-import { useMenus } from '@/hooks/useMenus'
+import { storeToRefs } from 'pinia'
+import { useMenuStore } from '@/store/menu'
 import AppMain from '@/layouts/components/AppMain.vue'
-import Menu from '@/layouts/components/Menu/index.vue'
+import NavigationBar from '@/layouts/components/NavigationBar/index.vue'
+import Sidebar from '@/layouts/components/Sidebar/index.vue'
 
-const { menus, activeMenu, activeMenuPath } = useMenus()
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const firstLevelMenus = computed(() => menus.value.map(({ children, ...m }) => m))
-const firstLevelActiveMenu = computed(() => activeMenuPath.value[0])
-
-const secondLevelMenus = computed(() => firstLevelActiveMenu.value?.children || [])
+const { secondLevelMenus } = storeToRefs(useMenuStore())
 </script>
 
 <style lang="scss" scoped></style>

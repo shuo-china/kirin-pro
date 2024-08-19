@@ -1,3 +1,6 @@
+import { StoreId } from '@/utils/enums'
+import { defineStore } from 'pinia'
+
 import { RouteRecordRaw } from 'vue-router'
 import { resolve } from 'path-browserify'
 import { routes } from '@/router'
@@ -117,7 +120,7 @@ function getActiveMenuPath(activeMenu: Nullable<Menu>) {
   return path
 }
 
-export function useMenus() {
+export const useMenuStore = defineStore(StoreId.Menu, () => {
   const route = useRoute()
   const userStore = useUserStore()
 
@@ -127,9 +130,20 @@ export function useMenus() {
 
   const activeMenuPath = computed(() => getActiveMenuPath(activeMenu.value))
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const firstLevelMenus = computed(() => menus.value.map(({ children, ...m }) => m))
+  const firstLevelActiveMenu = computed(() =>
+    activeMenuPath.value.length ? activeMenuPath.value[0] : null
+  )
+
+  const secondLevelMenus = computed(() => firstLevelActiveMenu.value?.children || [])
+
   return {
     menus,
     activeMenu,
-    activeMenuPath
+    activeMenuPath,
+    firstLevelMenus,
+    firstLevelActiveMenu,
+    secondLevelMenus
   }
-}
+})

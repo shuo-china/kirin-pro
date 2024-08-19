@@ -1,6 +1,8 @@
 <template>
-  <router-view />
-  <Footer />
+  <el-scrollbar class="h-[calc(100vh-theme('height.navigationbar'))] p-5">
+    <router-view />
+    <Footer />
+  </el-scrollbar>
 </template>
 
 <script setup lang="ts">

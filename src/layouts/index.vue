@@ -1,7 +1,9 @@
 <template>
-  <Side v-if="appStore.layout === LayoutMode.Side" />
-  <Top v-if="appStore.layout === LayoutMode.Top" />
-  <Mix v-if="appStore.layout === LayoutMode.Mix" />
+  <div class="test h-full">
+    <Side v-if="appStore.layout === LayoutMode.Side" />
+    <Top v-if="appStore.layout === LayoutMode.Top" />
+    <Mix v-if="appStore.layout === LayoutMode.Mix" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -14,4 +16,8 @@ import Mix from './Mix.vue'
 const appStore = useAppStore()
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.test {
+  background: linear-gradient(#fff, #f5f5f5 28%);
+}
+</style>

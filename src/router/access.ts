@@ -5,5 +5,8 @@ export default function access(
   userInfo: UserInfo,
   route: RouteRecordRaw | RouteLocationNormalizedGeneric
 ) {
+  if (route.path === '/demo/form') {
+    return false
+  }
   return true
 }
