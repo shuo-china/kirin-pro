@@ -1,6 +1,5 @@
 import { StoreId } from '@/utils/enums'
 import { defineStore } from 'pinia'
-
 import { RouteMeta, RouteRecordRaw } from 'vue-router'
 import { resolve } from 'path-browserify'
 import { routes } from '@/router'
@@ -22,12 +21,12 @@ function generateMenus(userInfo: Nullable<UserInfo>) {
   if (!userInfo) {
     return []
   }
-  return generateMenusByRoutes(routes, (route, path) => access(userInfo, route, path))
+  return generateMenusByRoutes(routes, (path, meta) => access(userInfo, path, meta))
 }
 
 function generateMenusByRoutes(
   routes: RouteRecordRaw[],
-  checkPermission: (route: RouteMeta | undefined, path: string) => boolean,
+  checkPermission: (path: string, meta?: RouteMeta) => boolean,
   parentMenu: Nullable<Menu> = null,
   level = 1
 ) {
@@ -37,8 +36,7 @@ function generateMenusByRoutes(
     if (route.meta?.hideInMenu) continue
 
     let menu = generateMenuByRoute(route, parentMenu, level)
-
-    if (!checkPermission(route.meta, menu.path)) continue
+    if (!checkPermission(menu.path, route.meta)) continue
 
     if (route.children?.some(child => !child.meta?.hideInMenu)) {
       const children = generateMenusByRoutes(route.children, checkPermission, menu, level + 1)
