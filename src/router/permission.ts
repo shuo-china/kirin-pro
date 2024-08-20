@@ -36,7 +36,7 @@ router.beforeEach(async (to, _from, next) => {
     return next()
   }
 
-  if (!access(userStore.userInfo!, to)) {
+  if (!access(userStore.userInfo!, to.meta, to.path)) {
     return next('/403')
   }
 

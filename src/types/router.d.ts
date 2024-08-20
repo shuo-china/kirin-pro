@@ -7,5 +7,6 @@ declare module 'vue-router' {
     title?: string
     icon?: string
     hideInMenu?: boolean
+    roles?: string[]
   }
 }

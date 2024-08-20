@@ -75,8 +75,8 @@ export const routes: RouteRecordRaw[] = [
         name: 'Form',
         component: () => import('@/pages/demo/form.vue'),
         meta: {
-          title: '表单示例',
-          icon: 'tickets'
+          title: '表单示例'
+          // icon: 'tickets'
         }
       }
     ]
