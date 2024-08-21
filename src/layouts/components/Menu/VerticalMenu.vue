@@ -1,14 +1,12 @@
 <template>
   <el-menu
     class="border-none!"
-    background-color="transparent"
     :default-active="activeMenu?.path"
     :unique-opened="true"
     :collapse-transition="false"
     :collapse="appStore.sidebarCollapsed"
-    router
     mode="vertical"
-    v-bind="attrs"
+    v-bind="$attrs"
   >
     <MenuItem v-for="menu in menus" :key="menu.path" :menu="menu" />
   </el-menu>
@@ -19,7 +17,9 @@ import { Menu } from '@/store/menu'
 import MenuItem from './MenuItem.vue'
 import { useAppStore } from '@/store/app'
 
-const attrs = useAttrs()
+defineOptions({
+  inheritAttrs: false
+})
 
 interface Props {
   menus: Menu[]
@@ -30,3 +30,9 @@ defineProps<Props>()
 
 const appStore = useAppStore()
 </script>
+
+<style lang="scss" scoped>
+.el-menu {
+  --el-menu-bg-color: transparent;
+}
+</style>

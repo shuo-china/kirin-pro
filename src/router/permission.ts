@@ -37,7 +37,7 @@ router.beforeEach(async (to, _from, next) => {
   }
 
   for (const route of to.matched) {
-    if (!access(userStore.userInfo!, route.path, route.meta)) {
+    if (!access(userStore.userInfo!, route.meta, route.path)) {
       return next('/403')
     }
   }

@@ -1,3 +1,5 @@
+@import './mixin.scss';
+
 html,
 body,
 #app {
@@ -10,3 +12,30 @@ body,
   box-sizing: border-box;
 }
 
+a,
+a:focus,
+a:hover {
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+
+  &-thumb {
+    border-radius: 4px;
+    background-color: #90939955;
+
+    &:hover {
+      background-color: #90939977;
+    }
+
+    &:active {
+      background-color: #90939999;
+    }
+  }
+
+  &-corner {
+    background-color: transparent;
+  }
+}

@@ -80,6 +80,20 @@ export const routes: RouteRecordRaw[] = [
         }
       }
     ]
+  },
+  {
+    path: '/link',
+    children: [
+      {
+        path: 'https://www.baidu.com',
+        component: () => {},
+        name: 'Link',
+        meta: {
+          title: '外链',
+          icon: 'link'
+        }
+      }
+    ]
   }
 ]
 

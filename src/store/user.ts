@@ -5,7 +5,9 @@ import { useLocalStorage } from '@vueuse/core'
 import { TOKEN_KEY } from '@/utils/constants'
 
 export interface UserInfo {
+  id: number
   name: string
+  roles: string[]
 }
 
 export const useUserStore = defineStore(StoreId.User, () => {
@@ -20,9 +22,11 @@ export const useUserStore = defineStore(StoreId.User, () => {
   }
 
   const getUserInfo = async () => {
-    const result = await getUserInfoApi()
+    const { id, name } = await getUserInfoApi()
     userInfo.value = {
-      name: result.name
+      id,
+      name,
+      roles: []
     }
   }
 

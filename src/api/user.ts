@@ -18,6 +18,7 @@ export function loginApi(data: LoginRequestData) {
 }
 
 export interface UserInfoResponseData {
+  id: number
   name: string
 }
 

@@ -5,6 +5,7 @@ import { resolve } from 'path-browserify'
 import { routes } from '@/router'
 import { UserInfo, useUserStore } from '@/store/user'
 import access from '@/router/access'
+import { isExternal } from '@/utils/validate'
 
 export type Menu = {
   title: string
@@ -21,7 +22,7 @@ function generateMenus(userInfo: Nullable<UserInfo>) {
   if (!userInfo) {
     return []
   }
-  return generateMenusByRoutes(routes, (path, meta) => access(userInfo, path, meta))
+  return generateMenusByRoutes(routes, (path, meta) => access(userInfo, meta, path))
 }
 
 function generateMenusByRoutes(
@@ -68,7 +69,7 @@ function generateMenuByRoute(
   return {
     title: meta?.title || path,
     icon: meta?.icon,
-    path: resolve(parentMenu?.path || '', path),
+    path: isExternal(path) ? path : resolve(parentMenu?.path || '', path),
     level,
     key: name as string,
     parent: parentMenu,
