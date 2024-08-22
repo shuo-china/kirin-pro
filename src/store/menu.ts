@@ -22,12 +22,12 @@ function generateMenus(userInfo: Nullable<UserInfo>) {
   if (!userInfo) {
     return []
   }
-  return generateMenusByRoutes(routes, (path, meta) => access(userInfo, meta, path))
+  return generateMenusByRoutes(routes, (meta, path) => access(userInfo, meta, path))
 }
 
 function generateMenusByRoutes(
   routes: RouteRecordRaw[],
-  checkPermission: (path: string, meta?: RouteMeta) => boolean,
+  checkPermission: (meta: RouteMeta | undefined, path: string) => boolean,
   parentMenu: Nullable<Menu> = null,
   level = 1
 ) {
@@ -37,7 +37,7 @@ function generateMenusByRoutes(
     if (route.meta?.hideInMenu) continue
 
     let menu = generateMenuByRoute(route, parentMenu, level)
-    if (!checkPermission(menu.path, route.meta)) continue
+    if (!checkPermission(route.meta, menu.path)) continue
 
     if (route.children?.some(child => !child.meta?.hideInMenu)) {
       const children = generateMenusByRoutes(route.children, checkPermission, menu, level + 1)

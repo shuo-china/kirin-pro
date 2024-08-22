@@ -3,7 +3,7 @@
     <div class="flex cursor-pointer items-center rounded p-2.5 outline-none hover:bg-black/3">
       <el-avatar shape="circle" :size="28" :src="defaultAvatarPng"></el-avatar>
       <span class="pl-2 text-black/45">
-        {{ userStore.userInfo?.name ? userStore.userInfo?.name : 'guest' }}
+        {{ userStore.userInfo?.name ? userStore.userInfo?.name : '' }}
       </span>
     </div>
     <template #dropdown>
