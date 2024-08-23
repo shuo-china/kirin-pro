@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-col overflow-auto">
-    <div class="flex-grow p-5">
+    <div class="flex-grow p-6">
       <router-view />
     </div>
     <Footer />

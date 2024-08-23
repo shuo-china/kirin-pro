@@ -1,15 +1,15 @@
 <template>
   <el-sub-menu v-if="menu.children" :index="menu.path">
     <template #title>
-      <component :is="menu.icon" v-if="menu.icon" class="mr-3 w-4 text-lg" />
+      <el-icon><component :is="menu.icon" v-if="menu.icon" /></el-icon>
       <span>{{ menu.title }}</span>
     </template>
     <MenuItem v-for="child in menu.children" :key="child.path" :menu="child" />
   </el-sub-menu>
   <MenuItemLink v-else :to="menu.path">
     <el-menu-item :index="menu.path">
-      <component :is="menu.icon" v-if="menu.icon" class="mr-3 w-4 text-lg" />
-      <span>{{ menu.title }}</span>
+      <template #title>{{ menu.title }}</template>
+      <el-icon><component :is="menu.icon" v-if="menu.icon" /></el-icon>
     </el-menu-item>
   </MenuItemLink>
 </template>

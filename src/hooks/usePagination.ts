@@ -5,6 +5,7 @@ interface PaginationType {
   pageKey: string
   pageSizeKey: string
   totalKey: string
+  dataKey: string
 }
 
 export type Service<T> = (options?: AxiosRequestConfig) => Promise<Pagination<T>>
@@ -18,15 +19,21 @@ const defaultPaginationOptions: PaginationType = {
   pageKey: paginationConfig.requestPageKey,
   pageSizeKey: paginationConfig.requestPageSizeKey,
   // response keys
-  totalKey: paginationConfig.responseTotalKey
+  totalKey: paginationConfig.responseTotalKey,
+  dataKey: paginationConfig.responseDataKey
 }
 
 function usePagination<T = any>(service: Service<T>, options: Options = {}) {
   const responseData = ref<Pagination<T>>()
+  const loading = ref(false)
 
   const { pagination, params: paramsOptions, ...restOptions } = options
 
-  const { pageKey, pageSizeKey, totalKey } = Object.assign({}, defaultPaginationOptions, pagination)
+  const { pageKey, pageSizeKey, totalKey, dataKey } = Object.assign(
+    {},
+    defaultPaginationOptions,
+    pagination
+  )
 
   const params = ref({
     [pageKey]: 1,
@@ -34,10 +41,17 @@ function usePagination<T = any>(service: Service<T>, options: Options = {}) {
     ...paramsOptions
   })
 
-  const paging = (paginationParams: Record<string, any>) => {
-    params.value = Object.assign({}, params.value, paginationParams)
+  const paging = (paginationParams?: Record<string, any>) => {
+    loading.value = true
+    if (paginationParams) {
+      params.value = Object.assign({}, params.value, paginationParams)
+    }
     const axiosRequestConfig = Object.assign({ params: params.value }, restOptions)
-    service(axiosRequestConfig).then(res => (responseData.value = res))
+    service(axiosRequestConfig)
+      .then(res => (responseData.value = res))
+      .finally(() => {
+        loading.value = false
+      })
   }
 
   const changePage = (page: number) => {
@@ -45,11 +59,15 @@ function usePagination<T = any>(service: Service<T>, options: Options = {}) {
   }
 
   const changePageSize = (pageSize: number) => {
-    paging({ [pageKey]: pageSize })
+    paging({ [pageSizeKey]: pageSize })
   }
 
   const total = computed(
-    () => responseData.value?.[totalKey as (typeof paginationConfig)['responseTotalKey']] || 0
+    () => responseData.value?.[totalKey as PaginationConfig['responseTotalKey']] || 0
+  )
+
+  const data = computed(
+    () => responseData.value?.[dataKey as PaginationConfig['responseDataKey']] || []
   )
 
   const currentPage = computed({
@@ -66,7 +84,13 @@ function usePagination<T = any>(service: Service<T>, options: Options = {}) {
     }
   })
 
+  onMounted(() => {
+    paging()
+  })
+
   return {
+    loading,
+    data,
     currentPage,
     pageSize,
     total

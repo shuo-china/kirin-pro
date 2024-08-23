@@ -1,10 +1,7 @@
 import { defineConfig, presetUno } from 'unocss'
 
 export default defineConfig({
-  presets: [
-    // presetAttributify(),
-    presetUno()
-  ],
+  presets: [presetUno()],
   theme: {
     width: {
       sidebar: '200px',

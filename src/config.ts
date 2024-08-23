@@ -1,5 +1,6 @@
 import { LayoutMode } from './utils/enums'
-import logoSvg from '@/assets/logo.svg'
+
+// const isDev = import.meta.env.MODE === 'development'
 
 export const pagination = {
   defaultPageSize: 15,
@@ -11,7 +12,7 @@ export const pagination = {
 
 const config: Config = {
   title: 'Kirin Pro',
-  logo: logoSvg,
+  logo: '/logo.svg',
   layout: LayoutMode.Side,
   apiBaseURL: 'https://api.yuanjiazc.com/admin',
   pagination

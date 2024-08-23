@@ -5,6 +5,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import UnoCSS from 'unocss/vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
+import config from './src/config'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -25,6 +27,13 @@ export default defineConfig({
       dts: 'src/types/components.d.ts'
     }),
     vue(),
-    UnoCSS()
+    UnoCSS(),
+    createHtmlPlugin({
+      inject: {
+        data: {
+          title: config.title
+        }
+      }
+    })
   ]
 })

@@ -1,5 +1,5 @@
 <template>
-  <div class="test h-full">
+  <div class="app-bg h-full">
     <Side v-if="appStore.layout === LayoutMode.Side" />
     <Top v-if="appStore.layout === LayoutMode.Top" />
     <Mix v-if="appStore.layout === LayoutMode.Mix" />
@@ -17,7 +17,7 @@ const appStore = useAppStore()
 </script>
 
 <style lang="scss" scoped>
-.test {
-  background: linear-gradient(#fff, #f5f5f5 28%);
+.app-bg {
+  background: linear-gradient(#fff, #f5f5f5 100px);
 }
 </style>

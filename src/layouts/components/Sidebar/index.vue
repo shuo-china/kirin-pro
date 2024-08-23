@@ -19,7 +19,7 @@
         />
       </el-scrollbar>
       <div
-        class="absolute top-5 z-10 h-6 w-6 flex cursor-pointer items-center justify-center rounded-full bg-white text-black/25 shadow -right-3 hover:text-black/65"
+        class="absolute top-6 z-10 h-6 w-6 flex cursor-pointer items-center justify-center rounded-full bg-white text-black/25 shadow -right-3 hover:text-black/65"
         @click="() => appStore.toggleSidebarCollapsed()"
       >
         <ArrowLeftBold v-show="sidebarCollapsed === false" class="h-3 w-3" />

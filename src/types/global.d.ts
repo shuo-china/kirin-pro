@@ -10,15 +10,17 @@ declare global {
     message: string
   }
 
+  type PaginationConfig = typeof pagination
+
   interface Config {
     title: string
     logo: string
     layout: LayoutMode
     apiBaseURL: string
-    pagination: typeof pagination
+    pagination: PaginationConfig
   }
 
-  type Pagination<T = any> = Record<Config['pagination']['responseTotalKey'], number> & {
-    [k in Config['pagination']['responseDataKey']]: T[]
+  type Pagination<T = any> = Record<PaginationConfig['responseTotalKey'], number> & {
+    [k in PaginationConfig['responseDataKey']]: T[]
   }
 }

@@ -53,30 +53,21 @@ export const routes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/demo',
+    path: '/user',
     component: Layout,
-    redirect: '/demo/list',
+    redirect: '/user/list',
     meta: {
-      title: '示例展示',
+      title: '用户管理',
       icon: 'files'
     },
     children: [
       {
         path: 'list',
-        name: 'List',
-        component: () => import('@/pages/demo/list.vue'),
+        name: 'userList',
+        component: () => import('@/pages/user/list/index.vue'),
         meta: {
-          title: '列表示例',
+          title: '用户列表',
           icon: 'document'
-        }
-      },
-      {
-        path: 'form',
-        name: 'Form',
-        component: () => import('@/pages/demo/form.vue'),
-        meta: {
-          title: '表单示例',
-          icon: 'tickets'
         }
       }
     ]
