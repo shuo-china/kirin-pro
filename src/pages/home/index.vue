@@ -15,9 +15,3 @@ const appStore = useAppStore()
 
 const { layout } = storeToRefs(appStore)
 </script>
-
-<style lang="scss" scoped>
-.hello {
-  background-color: red;
-}
-</style>

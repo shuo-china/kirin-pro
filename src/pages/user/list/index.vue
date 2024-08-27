@@ -1,7 +1,7 @@
 <template>
   <ProTable :request="getUserListApi">
-    <el-table-column prop="id" label="ID" />
-    <el-table-column prop="name" label="Name" />
+    <ProTableColumn prop="id" label="ID" search />
+    <ProTableColumn prop="name" label="姓名" search />
   </ProTable>
 </template>
 

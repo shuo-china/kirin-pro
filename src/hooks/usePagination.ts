@@ -8,7 +8,7 @@ interface PaginationType {
   dataKey: string
 }
 
-export type Service<T> = (options?: AxiosRequestConfig) => Promise<Pagination<T>>
+export type Service<T = any> = (options?: AxiosRequestConfig) => Promise<Pagination<T>>
 
 export type Options = AxiosRequestConfig & {
   pagination?: PaginationType
@@ -93,7 +93,8 @@ function usePagination<T = any>(service: Service<T>, options: Options = {}) {
     data,
     currentPage,
     pageSize,
-    total
+    total,
+    paging
   }
 }
 
