@@ -16,7 +16,7 @@
           v-model:page-size="pageSize"
           background
           :total="total"
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next"
           v-bind="paginationProps"
         />
       </div>

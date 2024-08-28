@@ -50,7 +50,6 @@
 <script setup lang="ts">
 import config from '@/config'
 import { useUserStore } from '@/store/user'
-import { ApiError } from '@/utils/request'
 import Footer from '@/layouts/components/Footer/index.vue'
 import { FormInstance, FormRules } from 'element-plus'
 

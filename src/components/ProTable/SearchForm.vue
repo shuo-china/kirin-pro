@@ -1,6 +1,6 @@
 <template>
-  <el-card v-if="fields.length" shadow="never" class="mb-4" body-class="p-6! pb-2.5!">
-    <el-form ref="formRef" :model="formData" :label-width="80">
+  <el-card v-if="fields.length" shadow="never" class="mb-4" body-class="p-6! pb-1.5!">
+    <el-form ref="formRef" :model="formData" :label-width="110">
       <el-row :gutter="24">
         <el-col
           v-for="(field, index) in fields"
@@ -18,6 +18,7 @@
             <el-select
               v-if="field.searchType === 'select'"
               v-model="formData[field.searchFormItemProps.prop as string]"
+              class="w-full!"
               v-bind="field.searchFormFieldProps"
               clearable
             >
@@ -31,6 +32,7 @@
             <el-date-picker
               v-if="field.searchType === 'date-picker'"
               v-model="formData[field.searchFormItemProps.prop as string]"
+              class="w-full!"
               :type="field.searchFormFieldProps.type ?? 'date'"
               v-bind="field.searchFormFieldProps"
             />

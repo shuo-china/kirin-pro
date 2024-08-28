@@ -5,7 +5,7 @@ import { LayoutMode } from './utils/enums'
 const apiBaseURL = 'https://api.yuanjiazc.com/admin'
 
 export const pagination = {
-  defaultPageSize: 15,
+  defaultPageSize: 10,
   requestPageKey: 'page',
   requestPageSizeKey: 'list_rows',
   responseTotalKey: 'total',
