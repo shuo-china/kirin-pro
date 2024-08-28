@@ -89,9 +89,6 @@ const handleSubmit = () => {
           ElMessage.success('登录成功')
           router.push('/')
         })
-        .catch(err => {
-          ElMessage.error(err instanceof ApiError ? err.data.message : err.message)
-        })
         .finally(() => {
           loading.value = false
         })

@@ -30,12 +30,17 @@ watch(
       id,
       search: !!props.search,
       searchType: props.searchType,
-      searchField: props.searchField || (attrs.prop as string) || '',
       searchFormItemProps: {
         label: (attrs.label as string) || '',
+        prop: props.searchField || (attrs.prop as string) || '',
         ...props.searchItemProps
       },
-      searchFormFieldProps: props.searchFieldProps || {}
+      searchFormFieldProps: props.searchFieldProps || {},
+      searchTransform: props.searchTransform
+    }
+
+    if (context.searchFormItemProps.label) {
+      context.searchFormItemProps.label += ' :'
     }
 
     searchFormContext?.addOrUpdateField(context)

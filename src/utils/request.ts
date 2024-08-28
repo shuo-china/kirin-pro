@@ -33,6 +33,17 @@ axiosInstance.interceptors.response.use(
       if (isTokenInvalid(response.status, response.data.code)) {
         useUserStore().logout()
         location.reload()
+      } else {
+        const errorMsg = response.data.message || message || 'Unknown Error'
+        if (response.status >= 500) {
+          ElNotification({
+            type: 'error',
+            title: response.status,
+            message: errorMsg
+          })
+        } else {
+          ElMessage.error(errorMsg)
+        }
       }
 
       return Promise.reject(new ApiError(message, response.status, response.data))

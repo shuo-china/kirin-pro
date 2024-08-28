@@ -1,10 +1,12 @@
 <template>
   <div>
-    <SearchForm @search="paging" />
-    <div class="bg-white px-6 py-4">
-      <slot name="header"></slot>
+    <SearchForm @search="paging" @reset="handleReset" />
+    <el-card shadow="never" body-class="px-6! py-4!">
+      <div v-if="$slots.header" class="flex justify-end pb-4">
+        <slot name="header"></slot>
+      </div>
       <el-table ref="_ref" v-loading="loading" :data="data" v-bind="$attrs">
-        <template v-for="(_, name) in _.omit($slots, 'header')" #[name]="slotData">
+        <template v-for="(_, name) in lodash.omit($slots, 'header')" #[name]="slotData">
           <slot :name="name" v-bind="slotData || {}"></slot>
         </template>
       </el-table>
@@ -12,17 +14,18 @@
         <el-pagination
           v-model:current-page="currentPage"
           v-model:page-size="pageSize"
+          background
           :total="total"
           layout="total, prev, pager, next"
           v-bind="paginationProps"
         />
       </div>
-    </div>
+    </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import _ from 'lodash'
+import lodash from 'lodash'
 import usePagination from '@/hooks/usePagination'
 import type { ElTable } from 'element-plus'
 import SearchForm from './SearchForm.vue'
@@ -35,7 +38,14 @@ defineOptions({
 
 const props = defineProps(proTableProps as ProTableProps)
 
-const { data, loading, currentPage, pageSize, total, paging } = usePagination(props.request)
+const { data, loading, currentPage, pageSize, total, paging, changePage } = usePagination(
+  props.request,
+  props.requestOptions
+)
+
+const handleReset = (values: Record<string, any>) => {
+  changePage(1, values)
+}
 
 // provide
 const fields = ref<SearchFormItemContext[]>([])
