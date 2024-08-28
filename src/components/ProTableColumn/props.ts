@@ -7,18 +7,20 @@ const proTableSearchType = ['input', 'select', 'date-picker'] as const
 
 export type ProTableSearchType = (typeof proTableSearchType)[number]
 
+export type SearchOption = { label: string | number; value: string | number }
+
 export const proTableColumnProps = {
   search: {
     type: Boolean,
     default: false
   },
-  searchField: {
-    type: String
-  },
   searchType: {
     type: definePropType<ProTableSearchType>(String),
     default: 'input',
     validator: (value: any) => proTableSearchType.includes(value)
+  },
+  searchField: {
+    type: String
   },
   searchItemProps: {
     type: definePropType<Partial<FormItemProps>>(Object)
@@ -28,6 +30,9 @@ export const proTableColumnProps = {
   },
   searchTransform: {
     type: definePropType<SearchTransform>(Function)
+  },
+  searchOptions: {
+    type: definePropType<SearchOption[]>(Array)
   }
 } as const
 

@@ -17,6 +17,7 @@ declare global {
     logo: string
     layout: LayoutMode
     apiBaseURL: string
+    uploadURL: string
     pagination: PaginationConfig
   }
 

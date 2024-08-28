@@ -1,6 +1,6 @@
 import { FormItemProps } from 'element-plus'
 import type { InjectionKey } from 'vue'
-import { ProTableSearchType } from '../ProTableColumn/props'
+import { ProTableSearchType, SearchOption } from '../ProTableColumn/props'
 
 export type SearchTransform = (
   value: any,
@@ -14,6 +14,7 @@ export type SearchFormItemContext = {
   searchFormItemProps: Partial<FormItemProps>
   searchFormFieldProps: Record<string, any>
   searchTransform?: SearchTransform
+  searchOptions?: SearchOption[]
 }
 
 export type SearchFormContext = {

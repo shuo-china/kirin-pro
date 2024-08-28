@@ -13,12 +13,21 @@
               v-if="field.searchType === 'input'"
               v-model="formData[field.searchFormItemProps.prop as string]"
               v-bind="field.searchFormFieldProps"
+              clearable
             />
             <el-select
               v-if="field.searchType === 'select'"
               v-model="formData[field.searchFormItemProps.prop as string]"
               v-bind="field.searchFormFieldProps"
-            />
+              clearable
+            >
+              <el-option
+                v-for="item in field.searchOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
             <el-date-picker
               v-if="field.searchType === 'date-picker'"
               v-model="formData[field.searchFormItemProps.prop as string]"

@@ -36,6 +36,7 @@ watch(
         ...props.searchItemProps
       },
       searchFormFieldProps: props.searchFieldProps || {},
+      searchOptions: props.searchOptions,
       searchTransform: props.searchTransform
     }
 
