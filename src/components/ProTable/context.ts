@@ -9,12 +9,11 @@ export type SearchTransform = (
 
 export type SearchFormItemContext = {
   id: string
-  search: boolean
-  searchType: ProTableSearchType
-  searchFormItemProps: Partial<FormItemProps>
-  searchFormFieldProps: Record<string, any>
-  searchTransform?: SearchTransform
-  searchOptions?: SearchOption[]
+  type: ProTableSearchType
+  formItemProps: Partial<FormItemProps>
+  formFieldProps: Record<string, any>
+  transform?: SearchTransform
+  options?: SearchOption[]
 }
 
 export type SearchFormContext = {

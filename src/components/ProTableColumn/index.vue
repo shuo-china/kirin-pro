@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { searchFormContextKey } from '../ProTable/context'
+import { searchFormContextKey, SearchFormItemContext } from '../ProTable/context'
 import { proTableColumnProps, ProTableColumnProps } from './props'
 import _ from 'lodash'
 
@@ -15,38 +15,48 @@ defineOptions({
   inheritAttrs: false
 })
 
+const searchFormContext = inject(searchFormContextKey, undefined)
+
 const attrs = useAttrs()
 
 const props = defineProps(proTableColumnProps as ProTableColumnProps)
 
-const searchFormContext = inject(searchFormContextKey, undefined)
-
 const id = _.uniqueId()
+const context = computed<Nullable<SearchFormItemContext>>(() => {
+  const defaultFormItemProps = {
+    label: (attrs.label as string) || '',
+    prop: props.searchField || (attrs.prop as string) || ''
+  }
+
+  const defaultFormFieldsProps: Record<string, any> = {}
+  if (props.searchType === 'date-picker') {
+    defaultFormFieldsProps.type = 'date'
+  }
+
+  const value = {
+    id,
+    type: props.searchType,
+    options: props.searchOptions,
+    formItemProps: { ...defaultFormItemProps, ...props.searchItemProps },
+    formFieldProps: { ...defaultFormFieldsProps, ...props.searchFieldProps },
+    transform: props.searchTransform
+  }
+
+  return props.search ? value : null
+})
 
 watch(
-  [props, () => attrs.label, () => attrs.prop],
-  () => {
-    const context = {
-      id,
-      search: !!props.search,
-      searchType: props.searchType,
-      searchFormItemProps: {
-        label: (attrs.label as string) || '',
-        prop: props.searchField || (attrs.prop as string) || '',
-        ...props.searchItemProps
-      },
-      searchFormFieldProps: props.searchFieldProps || {},
-      searchOptions: props.searchOptions,
-      searchTransform: props.searchTransform
+  context,
+  c => {
+    if (c) {
+      searchFormContext?.addOrUpdateField(c)
+    } else {
+      searchFormContext?.removeField(id)
     }
-
-    if (context.searchFormItemProps.label) {
-      context.searchFormItemProps.label += ' :'
-    }
-
-    searchFormContext?.addOrUpdateField(context)
   },
-  { immediate: true }
+  {
+    immediate: true
+  }
 )
 
 onBeforeUnmount(() => {

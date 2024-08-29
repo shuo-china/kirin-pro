@@ -54,12 +54,12 @@ function usePagination<T = any>(service: Service<T>, options: Options = {}) {
       })
   }
 
-  const changePage = (page: number, paginationParams?: Record<string, any>) => {
-    paging({ [pageKey]: page, ...paginationParams })
+  const changePage = (page: number, otherParams?: Record<string, any>) => {
+    paging({ [pageKey]: page, ...otherParams })
   }
 
-  const changePageSize = (pageSize: number) => {
-    paging({ [pageSizeKey]: pageSize })
+  const changePageSize = (pageSize: number, otherParams?: Record<string, any>) => {
+    paging({ [pageSizeKey]: pageSize, ...otherParams })
   }
 
   const total = computed(

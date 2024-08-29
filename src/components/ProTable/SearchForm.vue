@@ -1,6 +1,6 @@
 <template>
   <el-card v-if="fields.length" shadow="never" class="mb-4" body-class="p-6! pb-1.5!">
-    <el-form ref="formRef" :model="formData" :label-width="110">
+    <el-form ref="formRef" :model="formData" :label-width="100">
       <el-row :gutter="24">
         <el-col
           v-for="(field, index) in fields"
@@ -8,40 +8,39 @@
           :span="span"
           :class="index >= colCount - 1 && isCollapse && index > 0 ? 'hidden!' : ''"
         >
-          <el-form-item v-bind="field.searchFormItemProps">
+          <el-form-item v-bind="field.formItemProps">
             <el-input
-              v-if="field.searchType === 'input'"
-              v-model="formData[field.searchFormItemProps.prop as string]"
-              v-bind="field.searchFormFieldProps"
+              v-if="field.type === 'input'"
+              v-model="formData[field.formItemProps.prop as string]"
+              v-bind="field.formFieldProps"
               clearable
             />
             <el-select
-              v-if="field.searchType === 'select'"
-              v-model="formData[field.searchFormItemProps.prop as string]"
+              v-if="field.type === 'select'"
+              v-model="formData[field.formItemProps.prop as string]"
               class="w-full!"
-              v-bind="field.searchFormFieldProps"
+              v-bind="field.formFieldProps"
               clearable
             >
               <el-option
-                v-for="item in field.searchOptions"
+                v-for="item in field.options"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
               />
             </el-select>
             <el-date-picker
-              v-if="field.searchType === 'date-picker'"
-              v-model="formData[field.searchFormItemProps.prop as string]"
+              v-if="field.type === 'date-picker'"
+              v-model="formData[field.formItemProps.prop as string]"
               class="w-full!"
-              :type="field.searchFormFieldProps.type ?? 'date'"
-              v-bind="field.searchFormFieldProps"
+              v-bind="field.formFieldProps"
             />
           </el-form-item>
         </el-col>
         <div class="flex flex-1 justify-end px-3">
           <el-form-item class="search-btns">
-            <el-button @click="handleReset">重置</el-button>
-            <el-button type="primary" @click="handleSubmit">查询</el-button>
+            <el-button icon="refresh" @click="handleReset">重置</el-button>
+            <el-button type="primary" icon="search" @click="handleSubmit">查询</el-button>
             <div
               v-if="showCollapseBtn"
               class="ml-4 flex cursor-pointer items-center gap-x-1.5 text-[var(--el-color-primary)]"
@@ -72,13 +71,17 @@ import { FormInstance } from 'element-plus'
 import { searchFormContextKey, SearchTransform } from './context'
 import _ from 'lodash'
 import { useToggle } from '@vueuse/core'
-import useScreenSize from '@/hooks/useScreenSize'
+import useBreakpoints from '@/hooks/useBreakpoints'
+
+const record = () => {
+  console.log('r')
+}
 
 const emit = defineEmits(['search', 'reset'])
 
-const { size } = useScreenSize()
+const { active } = useBreakpoints()
 const span = computed(() => {
-  switch (size.value) {
+  switch (active.value) {
     case 'xl':
     case 'lg':
       return 6
@@ -98,7 +101,7 @@ const searchFormContext = inject(searchFormContextKey, undefined)
 
 const formRef = ref<FormInstance>()
 
-const fields = computed(() => searchFormContext?.fields.value.filter(f => f.search) || [])
+const fields = computed(() => searchFormContext?.fields.value || [])
 
 const showCollapseBtn = computed(() => fields.value.length >= colCount.value)
 
@@ -108,14 +111,13 @@ const handleSubmit = () => {
   const data = toRaw(formData.value)
 
   const transforms = _.fromPairs<SearchTransform>(
-    fields.value
-      .filter(f => f.searchTransform)
-      .map(f => [f.searchFormItemProps.prop + '', f.searchTransform!])
+    fields.value.filter(f => f.transform).map(f => [f.formItemProps.prop + '', f.transform!])
   )
 
   for (const k in data) {
     if (k in transforms) {
-      const val = transforms[k](data[k], k)
+      const transform = transforms[k]
+      const val = transform(data[k], k)
       if (typeof val === 'string') {
         data[k] = val
       } else {

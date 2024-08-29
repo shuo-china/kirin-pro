@@ -1,34 +1,31 @@
 <template>
-  <div>
-    <SearchForm @search="paging" @reset="handleReset" />
-    <el-card shadow="never" body-class="px-6! py-4!">
-      <div v-if="$slots.header" class="flex justify-end pb-4">
-        <slot name="header"></slot>
+  <SearchForm @search="paging" @reset="handleReset" />
+  <el-card shadow="never" body-class="px-6! py-4!">
+    <template v-if="$slots.toolbar">
+      <div class="flex justify-end pb-4">
+        <slot name="toolbar"></slot>
       </div>
-      <el-table ref="_ref" v-loading="loading" :data="data" v-bind="$attrs">
-        <template v-for="(_, name) in lodash.omit($slots, 'header')" #[name]="slotData">
-          <slot :name="name" v-bind="slotData || {}"></slot>
-        </template>
-      </el-table>
-      <div class="mt-4 flex justify-end">
-        <el-pagination
-          v-model:current-page="currentPage"
-          v-model:page-size="pageSize"
-          background
-          :total="total"
-          layout="total, sizes, prev, pager, next"
-          v-bind="paginationProps"
-        />
-      </div>
-    </el-card>
-  </div>
+    </template>
+    <el-table ref="_ref" v-loading="loading" :data="data" v-bind="$attrs">
+      <template v-for="(_, name) in lodash.omit($slots, 'toolbar')" #[name]="slotData">
+        <slot :name="name" v-bind="slotData || {}"></slot>
+      </template>
+    </el-table>
+    <div class="mt-4 flex justify-end">
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :total="total"
+        v-bind="paginationProps"
+      />
+    </div>
+  </el-card>
 </template>
 
 <script setup lang="ts">
 import lodash from 'lodash'
 import usePagination from '@/hooks/usePagination'
-import type { ElTable } from 'element-plus'
-import SearchForm from './SearchForm.vue'
+import type { ElTable, PaginationProps } from 'element-plus'
 import { proTableProps, ProTableProps } from './props'
 import { SearchFormContext, searchFormContextKey, SearchFormItemContext } from './context'
 
@@ -37,6 +34,15 @@ defineOptions({
 })
 
 const props = defineProps(proTableProps as ProTableProps)
+
+const defaultPaginationProps: Partial<PaginationProps> = {
+  layout: 'total, sizes, prev, pager, next',
+  background: true
+}
+
+const paginationProps = computed(() =>
+  Object.assign({}, defaultPaginationProps, props.paginationProps)
+)
 
 const { data, loading, currentPage, pageSize, total, paging, changePage } = usePagination(
   props.request,
@@ -78,11 +84,15 @@ provide(searchFormContextKey, context)
 const _ref = ref()
 
 export type Exposed = {
-  getInstance: () => InstanceType<typeof ElTable>
+  paging: typeof paging
+  changePage: typeof changePage
+  getTableInstance: () => InstanceType<typeof ElTable>
 }
 
 const _expose: Exposed = {
-  getInstance: () => _ref.value
+  paging,
+  changePage,
+  getTableInstance: () => _ref.value
 }
 
 defineExpose(_expose)
