@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    class="h-[calc(theme('height.navigationbar')-1px)] border-none!"
+    class="h-full border-none!"
     :default-active="activeMenu?.path"
     :unique-opened="true"
     :collapse-transition="false"
@@ -27,4 +27,9 @@ interface Props {
 defineProps<Props>()
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-menu {
+  --el-menu-bg-color: transparent;
+  --el-menu-item-height: 55px;
+}
+</style>

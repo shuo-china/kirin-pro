@@ -66,8 +66,8 @@ export const routes: RouteRecordRaw[] = [
         name: 'userList',
         component: () => import('@/pages/user/list/index.vue'),
         meta: {
-          title: '用户列表',
-          icon: 'document'
+          title: '用户列表'
+          // icon: 'document'
         }
       }
     ]

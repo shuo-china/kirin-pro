@@ -36,7 +36,7 @@ defineOptions({
 const props = defineProps(proTableProps as ProTableProps)
 
 const defaultPaginationProps: Partial<PaginationProps> = {
-  layout: 'total, sizes, prev, pager, next',
+  layout: 'prev, pager, next, sizes, total',
   background: true
 }
 

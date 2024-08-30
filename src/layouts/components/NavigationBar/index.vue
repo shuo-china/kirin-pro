@@ -4,7 +4,7 @@
       <Breadcrumb v-if="layout === LayoutMode.Side" />
       <Logo v-else />
     </div>
-    <div class="flex-grow">
+    <div class="h-full flex-grow">
       <HorizontalMenu v-if="layout === LayoutMode.Top" :menus="menus" :active-menu="activeMenu" />
       <HorizontalMenu
         v-if="layout === LayoutMode.Mix"
