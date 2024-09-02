@@ -59,9 +59,8 @@ const router = useRouter()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 
-// 15150020157
 const formData = reactive({
-  username: '',
+  username: '15150020157',
   password: ''
 })
 

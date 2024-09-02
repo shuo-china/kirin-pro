@@ -13,8 +13,8 @@ export interface PaginationExtendsOption {
   pagination?: Partial<PaginationType>
 }
 
-export interface PaginationOptions<P extends unknown[]>
-  extends Options<P>,
+export interface PaginationOptions<R = any, P extends unknown[] = any>
+  extends Options<R, P>,
     PaginationExtendsOption {}
 
 const defaultPaginationOptions: PaginationType = {
@@ -28,7 +28,7 @@ const defaultPaginationOptions: PaginationType = {
 
 function usePagination<R = any, P extends unknown[] = any>(
   service: Service<R, P>,
-  options: PaginationOptions<P> = {}
+  options: PaginationOptions<R, P> = {}
 ) {
   const { pagination, ...restOptions } = options
 
