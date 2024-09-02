@@ -1,5 +1,6 @@
-import { AxiosRequestConfig } from 'axios'
 import { pagination as paginationConfig } from '@/config'
+import useRequest, { Options, Service } from './useRequest'
+import { merge } from 'lodash'
 
 interface PaginationType {
   pageKey: string
@@ -8,11 +9,13 @@ interface PaginationType {
   dataKey: string
 }
 
-export type Service<T = any> = (options?: AxiosRequestConfig) => Promise<Pagination<T>>
-
-export type Options = AxiosRequestConfig & {
-  pagination?: PaginationType
+export interface PaginationExtendsOption {
+  pagination?: Partial<PaginationType>
 }
+
+export interface PaginationOptions<P extends unknown[]>
+  extends Options<P>,
+    PaginationExtendsOption {}
 
 const defaultPaginationOptions: PaginationType = {
   // reuqest keys
@@ -23,11 +26,11 @@ const defaultPaginationOptions: PaginationType = {
   dataKey: paginationConfig.responseDataKey
 }
 
-function usePagination<T = any>(service: Service<T>, options: Options = {}) {
-  const responseData = ref<Pagination<T>>()
-  const loading = ref(false)
-
-  const { pagination, params: paramsOptions, ...restOptions } = options
+function usePagination<R = any, P extends unknown[] = any>(
+  service: Service<R, P>,
+  options: PaginationOptions<P> = {}
+) {
+  const { pagination, ...restOptions } = options
 
   const { pageKey, pageSizeKey, totalKey, dataKey } = Object.assign(
     {},
@@ -35,23 +38,31 @@ function usePagination<T = any>(service: Service<T>, options: Options = {}) {
     pagination
   )
 
-  const params = ref({
-    [pageKey]: 1,
-    [pageSizeKey]: paginationConfig.defaultPageSize,
-    ...paramsOptions
-  })
+  const finallyOptions = merge(
+    {
+      defaultParams: [
+        {
+          [pageKey]: 1,
+          [pageSizeKey]: paginationConfig.defaultPageSize
+        }
+      ]
+    },
+    restOptions
+  )
+
+  const {
+    data: responseData,
+    loading,
+    params,
+    run,
+    refresh
+  } = useRequest<R, P>(service, finallyOptions)
 
   const paging = (paginationParams?: Record<string, any>) => {
-    loading.value = true
-    if (paginationParams) {
-      params.value = Object.assign({}, params.value, paginationParams)
-    }
-    const axiosRequestConfig = Object.assign({ params: params.value }, restOptions)
-    service(axiosRequestConfig)
-      .then(res => (responseData.value = res))
-      .finally(() => {
-        loading.value = false
-      })
+    const [oldPaginationParams, ...restParams] = (params.value as P[]) || []
+    const newPaginationParams = { ...oldPaginationParams, ...paginationParams }
+    const mergerParams = [newPaginationParams, ...restParams] as P
+    run(...mergerParams)
   }
 
   const changePage = (page: number, otherParams?: Record<string, any>) => {
@@ -71,21 +82,18 @@ function usePagination<T = any>(service: Service<T>, options: Options = {}) {
   )
 
   const currentPage = computed({
-    get: () => params.value[pageKey],
+    get: () => (params.value?.[0] as any)?.[pageKey] ?? finallyOptions.defaultParams[0][pageKey],
     set(val: number) {
       changePage(val)
     }
   })
 
   const pageSize = computed({
-    get: () => params.value[pageSizeKey],
+    get: () =>
+      (params.value?.[0] as any)?.[pageSizeKey] ?? finallyOptions.defaultParams[0][pageSizeKey],
     set(val: number) {
       changePageSize(val)
     }
-  })
-
-  onMounted(() => {
-    paging()
   })
 
   return {
@@ -95,6 +103,7 @@ function usePagination<T = any>(service: Service<T>, options: Options = {}) {
     pageSize,
     total,
     paging,
+    refresh,
     changePage
   }
 }

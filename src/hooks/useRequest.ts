@@ -2,7 +2,6 @@ export type Service<R, P extends unknown[]> = (...args: P) => Promise<R>
 
 export type Options<P extends unknown[]> = {
   manual?: boolean
-  // 自动执行时的默认参数（manual:true）
   defaultParams?: P
 }
 
@@ -54,6 +53,7 @@ function useRequest<R = any, P extends unknown[] = any>(
     data,
     loading,
     error,
+    params,
     run,
     runAsync,
     refresh,

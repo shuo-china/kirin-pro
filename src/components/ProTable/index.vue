@@ -44,7 +44,7 @@ const paginationProps = computed(() =>
   Object.assign({}, defaultPaginationProps, props.paginationProps)
 )
 
-const { data, loading, currentPage, pageSize, total, paging, changePage } = usePagination(
+const { data, loading, currentPage, pageSize, total, paging, changePage, refresh } = usePagination(
   props.request,
   props.requestOptions
 )
@@ -83,16 +83,11 @@ provide(searchFormContextKey, context)
 // expose
 const _ref = ref()
 
-export type Exposed = {
-  paging: typeof paging
-  changePage: typeof changePage
-  getTableInstance: () => InstanceType<typeof ElTable>
-}
-
-const _expose: Exposed = {
+const _expose = {
   paging,
+  refresh,
   changePage,
-  getTableInstance: () => _ref.value
+  getTableInstance: () => _ref.value as InstanceType<typeof ElTable>
 }
 
 defineExpose(_expose)

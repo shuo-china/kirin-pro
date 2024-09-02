@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import { AxiosRequestConfig } from 'axios'
 
 export interface LoginRequestData {
   username: string
@@ -35,10 +34,10 @@ export interface UserItemResponseData {
   name: string
 }
 
-export function getUserListApi(options?: AxiosRequestConfig) {
+export function getUserListApi(params?: Record<string, any>) {
   return request<Pagination<UserItemResponseData>>({
     url: '/search/managers',
     method: 'get',
-    ...options
+    params
   })
 }
