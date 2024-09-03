@@ -1,6 +1,8 @@
 import { pagination as paginationConfig } from '@/config'
-import useRequest, { Options, Service } from './useRequest'
+import useRequest from './useRequest'
 import { merge } from 'lodash'
+import { Options } from 'element-plus'
+import { Service } from './useRequest/type'
 
 interface PaginationType {
   pageKey: string
@@ -38,17 +40,19 @@ function usePagination<R = any, P extends unknown[] = any>(
     pagination
   )
 
+  const defaultParams = [
+    {
+      [pageKey]: 1,
+      [pageSizeKey]: paginationConfig.defaultPageSize
+    }
+  ] as P
+
   const finallyOptions = merge(
     {
-      defaultParams: [
-        {
-          [pageKey]: 1,
-          [pageSizeKey]: paginationConfig.defaultPageSize
-        }
-      ]
+      defaultParams
     },
     restOptions
-  )
+  ) as Options<R, P>
 
   const {
     data: responseData,
@@ -56,7 +60,7 @@ function usePagination<R = any, P extends unknown[] = any>(
     params,
     run,
     refresh
-  } = useRequest<R, P>(service, finallyOptions)
+  } = useRequest<R, P>(service, finallyOptions, { params: defaultParams })
 
   const paging = (paginationParams?: Record<string, any>) => {
     const [oldPaginationParams, ...restParams] = (params.value as P[]) || []

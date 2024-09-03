@@ -20,13 +20,4 @@ import { getUserListApi } from '@/api/user'
 const label = ref('ID')
 
 const options = ref<any>([])
-
-const handleClick = () => {
-  options.value = [
-    {
-      label: 1,
-      value: 1
-    }
-  ]
-}
 </script>

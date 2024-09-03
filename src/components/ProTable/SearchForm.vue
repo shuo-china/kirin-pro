@@ -73,10 +73,6 @@ import _ from 'lodash'
 import { useToggle } from '@vueuse/core'
 import useBreakpoints from '@/hooks/useBreakpoints'
 
-const record = () => {
-  console.log('r')
-}
-
 const emit = defineEmits(['search', 'reset'])
 
 const { active } = useBreakpoints()

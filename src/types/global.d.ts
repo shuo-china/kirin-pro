@@ -24,4 +24,6 @@ declare global {
   type Pagination<T = any> = Record<PaginationConfig['responseTotalKey'], number> & {
     [k in PaginationConfig['responseDataKey']]: T[]
   }
+
+  type UnRef<T> = T extends Ref<infer V> ? V : T
 }
