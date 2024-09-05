@@ -1,96 +1,46 @@
 <template>
-  <div class="h-full flex flex-col">
-    <div class="grow px-6 py-14">
-      <div class="mb-10 flex items-center justify-center">
-        <img :src="config.logo" alt="logo" class="h-11 w-auto" />
-        <div class="ml-4 text-4xl font-bold">{{ config.title }}</div>
+  <div class="bg-image min-h-full flex flex-col bg-cover bg-center bg-no-repeat">
+    <div class="grow pt-24">
+      <div class="mb-6 flex flex-col items-center justify-center">
+        <img :src="config.logo" alt="logo" class="h-14 w-auto" />
+        <div class="mt-6 text-3xl text-white font-bold">{{ config.title }}</div>
       </div>
-      <div class="mx-auto w-80">
-        <el-form
-          ref="formRef"
-          :model="formData"
-          :rules="rules"
-          size="large"
-          @keyup.enter="handleSubmit"
-        >
-          <el-form-item prop="username">
-            <el-input
-              v-model="formData.username"
-              placeholder="用户名"
-              prefix-icon="User"
-              autocomplete="off"
-            />
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input
-              v-model="formData.password"
-              placeholder="密码"
-              prefix-icon="Lock"
-              show-password
-              autocomplete="off"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              class="w-full"
-              size="large"
-              type="primary"
-              :loading="loading"
-              @click="handleSubmit"
-              >确定</el-button
-            >
-          </el-form-item>
-        </el-form>
+      <div class="flex justify-center">
+        <el-card class="w-[580px]" body-class="p-10!">
+          <WechatLogin v-if="loginType === 'wechat'" />
+          <PasswordLogin v-if="loginType === 'password'" />
+          <div class="mt-10 flex flex-col items-center text-sm">
+            <div class="text-sm text-black/50">其他登录方式</div>
+            <el-button size="large" class="mt-2 w-[160px]" @click="changeLoginType">{{
+              loginType === 'password' ? '扫码登录' : '密码登录'
+            }}</el-button>
+          </div>
+        </el-card>
       </div>
     </div>
-    <Footer />
+    <Footer class="text-white" />
   </div>
 </template>
 
 <script setup lang="ts">
 import config from '@/config'
-import { useUserStore } from '@/store/user'
+import PasswordLogin from './PasswordLogin.vue'
+import WechatLogin from './WechatLogin.vue'
 import Footer from '@/layouts/components/Footer/index.vue'
-import { FormInstance, FormRules } from 'element-plus'
 
-const userStore = useUserStore()
-const router = useRouter()
+const loginType = ref<'password' | 'wechat'>('password')
 
-const formRef = ref<FormInstance>()
-const loading = ref(false)
-
-const formData = reactive({
-  username: '15150020157',
-  password: ''
-})
-
-const rules: FormRules<typeof formData> = {
-  username: {
-    required: true,
-    message: '请输入用户名'
-  },
-  password: {
-    required: true,
-    message: '请输入密码'
+const changeLoginType = () => {
+  if (loginType.value === 'password') {
+    loginType.value = 'wechat'
+  } else {
+    loginType.value = 'password'
   }
 }
-
-const handleSubmit = () => {
-  if (!formRef.value) return
-
-  formRef.value.validate(valid => {
-    if (valid) {
-      loading.value = true
-      userStore
-        .login(formData)
-        .then(() => {
-          ElMessage.success('登录成功')
-          router.push('/')
-        })
-        .finally(() => {
-          loading.value = false
-        })
-    }
-  })
-}
 </script>
+
+<style lang="scss" scoped>
+.bg-image {
+  background-image: url(/login-bg.png);
+}
+</style>

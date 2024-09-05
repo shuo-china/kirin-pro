@@ -10,6 +10,13 @@ export const routes: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/login-callback',
+    component: () => import('@/pages/login/Callback.vue'),
+    meta: {
+      hideInMenu: true
+    }
+  },
+  {
     path: '/403',
     component: Layout,
     meta: {

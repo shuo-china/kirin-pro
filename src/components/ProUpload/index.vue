@@ -2,6 +2,7 @@
   <div class="w-full">
     <el-upload
       ref="uploadRef"
+      :multiple="multiple"
       :file-list="fileList"
       :action="finallyConfig.apiURL"
       :before-upload="handleBeforeUpload"
@@ -70,6 +71,8 @@ const finallyAttrs = computed<Partial<UploadProps>>(() => {
 const uploadRef = ref<UploadInstance>()
 
 const fileList = ref<FileItem[]>(props.fileList || [])
+
+const multiple = computed(() => (finallyAttrs.value.limit === 1 ? false : true))
 
 const finallyConfig = computed(() => ({ ...config.upload[props.type], ...props.config }))
 

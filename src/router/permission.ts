@@ -3,7 +3,7 @@ import access from '@/router/access'
 import { useUserStore } from '@/store/user'
 import { isTokenInvalidError } from '@/utils/request'
 
-const unAuthenticatedWhiteList = ['/login']
+const unAuthenticatedWhiteList = ['/login', '/login-callback']
 const authenticatedWhiteList = ['/403', '/404']
 
 router.beforeEach(async (to, _from, next) => {

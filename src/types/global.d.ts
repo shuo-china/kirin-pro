@@ -24,6 +24,11 @@ declare global {
     [K in UploadConfigKey]: UploadConfigItem
   }
 
+  type WechatConfig = {
+    appid: string
+    redirectUri: string
+  }
+
   interface Config {
     title: string
     logo: string
@@ -31,6 +36,7 @@ declare global {
     apiBaseURL: string
     pagination: PaginationConfig
     upload: UploadConfig
+    wechat: WechatConfig
   }
 
   type Pagination<T = any> = Record<PaginationConfig['responseTotalKey'], number> & {
