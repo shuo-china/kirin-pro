@@ -69,7 +69,7 @@
 <script setup lang="ts">
 import { FormInstance } from 'element-plus'
 import { searchFormContextKey, SearchTransform } from './context'
-import _ from 'lodash'
+import { cloneDeep, fromPairs } from 'lodash'
 import { useToggle } from '@vueuse/core'
 import useBreakpoints from '@/hooks/useBreakpoints'
 
@@ -104,9 +104,9 @@ const showCollapseBtn = computed(() => fields.value.length >= colCount.value)
 const formData = ref<Record<string, any>>({})
 
 const handleSubmit = () => {
-  const data = toRaw(formData.value)
+  const data = cloneDeep(formData.value)
 
-  const transforms = _.fromPairs<SearchTransform>(
+  const transforms = fromPairs<SearchTransform>(
     fields.value.filter(f => f.transform).map(f => [f.formItemProps.prop + '', f.transform!])
   )
 

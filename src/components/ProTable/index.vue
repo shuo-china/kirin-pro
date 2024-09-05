@@ -1,5 +1,5 @@
 <template>
-  <SearchForm @search="paging" @reset="handleReset" />
+  <SearchForm @search="search" @reset="reset" />
   <el-card shadow="never" body-class="px-6! py-4!">
     <template v-if="$slots.toolbar">
       <div class="flex justify-end pb-4">
@@ -7,7 +7,7 @@
       </div>
     </template>
     <el-table ref="_ref" v-loading="loading" :data="data" v-bind="$attrs">
-      <template v-for="(_, name) in lodash.omit($slots, 'toolbar')" #[name]="slotData">
+      <template v-for="(__, name) in _.omit($slots, 'toolbar')" #[name]="slotData">
         <slot :name="name" v-bind="slotData || {}"></slot>
       </template>
     </el-table>
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import lodash from 'lodash'
+import _ from 'lodash'
 import usePagination from '@/hooks/usePagination'
 import type { ElTable, PaginationProps } from 'element-plus'
 import { proTableProps, ProTableProps } from './props'
@@ -44,14 +44,8 @@ const paginationProps = computed(() =>
   Object.assign({}, defaultPaginationProps, props.paginationProps)
 )
 
-const { data, loading, currentPage, pageSize, total, paging, changePage, refresh } = usePagination(
-  props.request,
-  props.requestOptions
-)
-
-const handleReset = (values: Record<string, any>) => {
-  changePage(1, values)
-}
+const { data, loading, currentPage, pageSize, total, search, reset, paging, changePage, refresh } =
+  usePagination(props.request, props.requestOptions)
 
 // provide
 const fields = ref<SearchFormItemContext[]>([])
@@ -85,9 +79,10 @@ const _ref = ref()
 
 const _expose = {
   paging,
+  search,
   refresh,
   changePage,
-  getTableInstance: () => _ref.value as InstanceType<typeof ElTable>
+  getInstance: () => _ref.value as InstanceType<typeof ElTable>
 }
 
 defineExpose(_expose)

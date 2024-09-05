@@ -2,6 +2,7 @@ import { pagination as paginationConfig } from '@/config'
 import useRequest from './useRequest'
 import { merge } from 'lodash'
 import { Options, Service } from './useRequest/type'
+import _ from 'lodash'
 
 interface PaginationType {
   pageKey: string
@@ -39,19 +40,19 @@ function usePagination<R = any, P extends unknown[] = any>(
     pagination
   )
 
-  const defaultParams = [
-    {
-      [pageKey]: 1,
-      [pageSizeKey]: paginationConfig.defaultPageSize
-    }
-  ]
-
   const finallyOptions = merge(
     {
-      defaultParams
+      defaultParams: [
+        {
+          [pageKey]: 1,
+          [pageSizeKey]: paginationConfig.defaultPageSize
+        }
+      ]
     },
     restOptions
   ) as Options<R, P>
+
+  const defaultParamsKeys = Object.keys(finallyOptions.defaultParams![0] as Record<string, any>)
 
   const {
     data: responseData,
@@ -59,13 +60,33 @@ function usePagination<R = any, P extends unknown[] = any>(
     params,
     run,
     refresh
-  } = useRequest<R, P>(service, finallyOptions, { params: defaultParams as P })
+  } = useRequest<R, P>(service, finallyOptions, { params: finallyOptions.defaultParams })
 
-  const paging = (paginationParams?: Record<string, any>) => {
+  const paging = (paginationParams?: Record<string, any>, isKeepExtraParams = true) => {
     const [oldPaginationParams, ...restParams] = (params.value as P[]) || []
-    const newPaginationParams = { ...oldPaginationParams, ...paginationParams }
+    let newPaginationParams
+    if (isKeepExtraParams) {
+      newPaginationParams = {
+        ...oldPaginationParams,
+        ...paginationParams
+      }
+    } else {
+      newPaginationParams = {
+        ..._.pick(oldPaginationParams, defaultParamsKeys),
+        ...paginationParams
+      }
+    }
+
     const mergerParams = [newPaginationParams, ...restParams] as P
     run(...mergerParams)
+  }
+
+  const search = (paginationParams?: Record<string, any>) => {
+    paging(paginationParams, false)
+  }
+
+  const reset = () => {
+    search()
   }
 
   const changePage = (page: number, otherParams?: Record<string, any>) => {
@@ -85,14 +106,18 @@ function usePagination<R = any, P extends unknown[] = any>(
   )
 
   const currentPage = computed({
-    get: () => (params.value?.[0] as any)?.[pageKey] ?? defaultParams[0][pageKey],
+    get: () =>
+      (params.value?.[0] as any)?.[pageKey] ??
+      (finallyOptions.defaultParams![0] as Record<string, any>)[pageKey],
     set(val: number) {
       changePage(val)
     }
   })
 
   const pageSize = computed({
-    get: () => (params.value?.[0] as any)?.[pageSizeKey] ?? defaultParams[0][pageSizeKey],
+    get: () =>
+      (params.value?.[0] as any)?.[pageSizeKey] ??
+      (finallyOptions.defaultParams![0] as Record<string, any>)[pageSizeKey],
     set(val: number) {
       changePageSize(val)
     }
@@ -105,8 +130,11 @@ function usePagination<R = any, P extends unknown[] = any>(
     pageSize,
     total,
     paging,
+    search,
+    reset,
     refresh,
-    changePage
+    changePage,
+    changePageSize
   }
 }
 

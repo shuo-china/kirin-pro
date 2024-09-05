@@ -12,13 +12,28 @@ export const pagination = {
   responseDataKey: 'data'
 } as const
 
+const upload = {
+  image: {
+    apiURL: `${apiBaseURL}/files`,
+    limitExt: [],
+    // 单位:KB
+    limitSize: 0
+  },
+  file: {
+    apiURL: `${apiBaseURL}/files`,
+    limitExt: [],
+    // 不限制
+    limitSize: 0
+  }
+}
+
 const config: Config = {
   title: 'Kirin Pro',
   logo: '/logo.svg',
   layout: LayoutMode.Side,
   apiBaseURL,
-  uploadURL: `${apiBaseURL}/files`,
-  pagination
+  pagination,
+  upload
 }
 
 export default config

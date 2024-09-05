@@ -12,13 +12,25 @@ declare global {
 
   type PaginationConfig = typeof pagination
 
+  type UploadConfigKey = 'image' | 'file'
+
+  type UploadConfigItem = {
+    apiURL: string
+    limitExt: string | string[]
+    limitSize: number
+  }
+
+  type UploadConfig = {
+    [K in UploadConfigKey]: UploadConfigItem
+  }
+
   interface Config {
     title: string
     logo: string
     layout: LayoutMode
     apiBaseURL: string
-    uploadURL: string
     pagination: PaginationConfig
+    upload: UploadConfig
   }
 
   type Pagination<T = any> = Record<PaginationConfig['responseTotalKey'], number> & {
@@ -26,4 +38,11 @@ declare global {
   }
 
   type UnRef<T> = T extends Ref<infer V> ? V : T
+
+  type UploadResult = {
+    id: number
+    name: string
+    path: string
+    size: string
+  }
 }
