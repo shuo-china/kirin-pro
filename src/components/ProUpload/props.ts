@@ -16,6 +16,9 @@ export const proUploadProps = {
   },
   config: {
     type: definePropType<UploadConfigItem>(Object)
+  },
+  transform: {
+    type: definePropType<(ids: number[]) => any>(Function)
   }
 } as const
 

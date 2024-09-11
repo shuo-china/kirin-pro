@@ -1,32 +1,37 @@
 <template>
-  <div class="w-full">
-    <el-upload
-      ref="uploadRef"
-      :multiple="multiple"
-      :file-list="fileList"
-      :action="finallyConfig.apiURL"
-      :before-upload="handleBeforeUpload"
-      v-bind="finallyAttrs"
-      @update:file-list="handleUpdateFileList"
-      @success="handleUploadSuccess"
-      @error="handleUploadError"
-      @exceed="handleExceed"
-      @remove="handleRemove"
-      @preview="handlePicPreview"
-    >
-      <template v-for="(_, name) in omit($slots, 'tip')" #[name]="slotData">
-        <slot :name="name" v-bind="slotData || {}"></slot>
-      </template>
-      <template #tip>
+  <el-upload
+    ref="uploadRef"
+    :multiple="multiple"
+    :file-list="fileList"
+    :action="finallyConfig.apiURL"
+    :before-upload="handleBeforeUpload"
+    v-bind="finallyAttrs"
+    @update:file-list="handleUpdateFileList"
+    @success="handleUploadSuccess"
+    @error="handleUploadError"
+    @exceed="handleExceed"
+    @remove="handleRemove"
+    @preview="handlePicPreview"
+  >
+    <template v-for="(_, name) in omit($slots, ['default', 'tip'])" #[name]="slotData">
+      <slot :name="name" v-bind="slotData || {}"></slot>
+    </template>
+    <template #default>
+      <slot name="default">
+        <el-button type="primary">上传</el-button>
+      </slot>
+    </template>
+    <template #tip>
+      <slot name="tip">
         <div v-if="limitExtTip" class="mt-1.5 text-xs text-black/70">{{ limitExtTip }}</div>
         <div v-if="limitSizeTip" class="mt-1.5 text-xs text-black/70">{{ limitSizeTip }}</div>
-      </template>
-    </el-upload>
+      </slot>
+    </template>
+  </el-upload>
 
-    <el-dialog v-model="dialogVisible">
-      <img class="w-full" :src="dialogImageUrl" />
-    </el-dialog>
-  </div>
+  <el-dialog v-model="dialogVisible">
+    <img class="w-full" :src="dialogImageUrl" />
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -101,7 +106,7 @@ const limitSizeTip = computed(() => {
 const getCurrentValue = (files: FileItem[]) => {
   const limit = finallyAttrs.value.limit
   const ids = files.filter(f => f.status === 'success').map(f => f.id)
-  return limit === 1 ? ids[0] : ids.join(',')
+  return props.transform ? props.transform(ids) : limit === 1 ? ids[0] : ids.join(',')
 }
 
 const handleUpdateFileList = (newVal: FileItem[]) => {

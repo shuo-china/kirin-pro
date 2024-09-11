@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center">
-    <div class="mb-6 text-sm text-black/50">请使用微信扫一扫登录</div>
+    <div class="mb-7 text-sm text-black/50">请使用微信扫一扫登录</div>
     <div class="box-content h-40 w-40 border border-black/20 border-solid">
       <iframe
         sandbox="allow-scripts allow-top-navigation allow-same-origin"

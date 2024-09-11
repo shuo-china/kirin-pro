@@ -1,9 +1,10 @@
 <template>
-  <div class="bg-image min-h-full flex flex-col bg-cover bg-center bg-no-repeat">
+  <div class="min-h-full flex flex-col">
+    <div class="bg-image fixed inset-0 bg-cover bg-center bg-no-repeat -z-1"></div>
     <div class="grow pt-24">
       <div class="mb-6 flex flex-col items-center justify-center">
         <img :src="config.logo" alt="logo" class="h-14 w-auto" />
-        <div class="mt-6 text-3xl text-white font-bold">{{ config.title }}</div>
+        <div class="mt-6 text-4xl text-white font-bold">{{ config.title }}</div>
       </div>
       <div class="flex justify-center">
         <el-card class="w-[580px]" body-class="p-10!">
@@ -25,7 +26,7 @@
 <script setup lang="ts">
 import config from '@/config'
 import PasswordLogin from './PasswordLogin.vue'
-import WechatLogin from './WechatLogin.vue'
+import WechatLogin from './WeChatLogin.vue'
 import Footer from '@/layouts/components/Footer/index.vue'
 
 const loginType = ref<'password' | 'wechat'>('password')
@@ -41,6 +42,6 @@ const changeLoginType = () => {
 
 <style lang="scss" scoped>
 .bg-image {
-  background-image: url(/login-bg.png);
+  background-image: url(/login-bg.jpg);
 }
 </style>

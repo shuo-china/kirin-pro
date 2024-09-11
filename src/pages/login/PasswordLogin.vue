@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-auto w-80">
-    <div class="mb-6 text-center text-sm text-black/50">请输入用户名和密码登录</div>
+  <div class="mx-auto w-74">
+    <div class="mb-7 text-center text-sm text-black/50">请输入用户名和密码登录</div>
     <el-form
       ref="formRef"
       :model="formData"
@@ -11,27 +11,15 @@
       <el-form-item prop="username">
         <el-input
           v-model="formData.username"
-          class="h-12"
           placeholder="用户名"
           prefix-icon="User"
           autocomplete="off"
         />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input
-          v-model="formData.password"
-          class="h-12"
-          placeholder="密码"
-          prefix-icon="Lock"
-          show-password
-        />
+        <el-input v-model="formData.password" placeholder="密码" prefix-icon="Lock" show-password />
       </el-form-item>
-      <el-button
-        class="h-12 w-full"
-        size="large"
-        type="primary"
-        :loading="loading"
-        @click="handleSubmit"
+      <el-button class="w-full" size="large" type="primary" :loading="loading" @click="handleSubmit"
         >登录</el-button
       >
     </el-form>
@@ -81,7 +69,7 @@ const handleSubmit = () => {
 </script>
 
 <style lang="scss" scoped>
-:global(input:-webkit-autofill) {
+:deep(input:-webkit-autofill) {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 </style>

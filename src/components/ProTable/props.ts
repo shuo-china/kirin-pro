@@ -9,6 +9,14 @@ export const proTableProps = {
     type: definePropType<Service<any, any>>(Function),
     required: true
   },
+  tableCardBorder: {
+    type: Boolean,
+    default: true
+  },
+  searchCardBorder: {
+    type: Boolean,
+    default: true
+  },
   requestOptions: {
     type: definePropType<PaginationOptions>(Object)
   },

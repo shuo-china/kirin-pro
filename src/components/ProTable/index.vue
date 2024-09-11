@@ -1,13 +1,17 @@
 <template>
-  <SearchForm @search="search" @reset="reset" />
-  <el-card shadow="never" body-class="px-6! py-4!">
+  <SearchForm :card-border="searchCardBorder" @search="search" @reset="reset" />
+  <div
+    :class="
+      tableCardBorder ? 'border border-[--el-border-color-light] rounded border-solid p-4' : ''
+    "
+  >
     <template v-if="$slots.toolbar">
       <div class="flex justify-end pb-4">
         <slot name="toolbar"></slot>
       </div>
     </template>
     <el-table ref="_ref" v-loading="loading" :data="data" v-bind="$attrs">
-      <template v-for="(__, name) in _.omit($slots, 'toolbar')" #[name]="slotData">
+      <template v-for="(_, name) in omit($slots, 'toolbar')" #[name]="slotData">
         <slot :name="name" v-bind="slotData || {}"></slot>
       </template>
     </el-table>
@@ -19,13 +23,13 @@
         v-bind="paginationProps"
       />
     </div>
-  </el-card>
+  </div>
 </template>
 
 <script setup lang="ts">
-import _ from 'lodash'
+import { omit } from 'lodash'
 import usePagination from '@/hooks/usePagination'
-import type { ElTable, PaginationProps } from 'element-plus'
+import type { ElTable, PaginationProps, TableInstance } from 'element-plus'
 import { proTableProps, ProTableProps } from './props'
 import { SearchFormContext, searchFormContextKey, SearchFormItemContext } from './context'
 
@@ -82,7 +86,7 @@ const _expose = {
   search,
   refresh,
   changePage,
-  getInstance: () => _ref.value as InstanceType<typeof ElTable>
+  getInstance: () => _ref.value as TableInstance
 }
 
 defineExpose(_expose)

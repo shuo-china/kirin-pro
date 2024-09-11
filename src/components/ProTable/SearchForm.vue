@@ -1,6 +1,14 @@
 <template>
-  <el-card v-if="fields.length" shadow="never" class="mb-4" body-class="p-6! pb-1.5!">
-    <el-form ref="formRef" :model="formData" :label-width="100">
+  <div
+    v-if="fields.length"
+    :class="[
+      'mb-4',
+      cardBorder
+        ? 'border border-[--el-border-color-light] rounded border-solid px-4 pt-4.5 pb-0'
+        : ''
+    ]"
+  >
+    <el-form ref="formRef" :model="formData" :label-width="85">
       <el-row :gutter="24">
         <el-col
           v-for="(field, index) in fields"
@@ -43,7 +51,7 @@
             <el-button type="primary" icon="search" @click="handleSubmit">查询</el-button>
             <div
               v-if="showCollapseBtn"
-              class="ml-4 flex cursor-pointer items-center gap-x-1.5 text-[var(--el-color-primary)]"
+              class="ml-4 flex cursor-pointer items-center gap-x-1 text-[var(--el-color-primary)]"
               @click="toggleCollapse()"
             >
               <template v-if="isCollapse">
@@ -63,7 +71,7 @@
         </div>
       </el-row>
     </el-form>
-  </el-card>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -74,6 +82,10 @@ import { useToggle } from '@vueuse/core'
 import useBreakpoints from '@/hooks/useBreakpoints'
 
 const emit = defineEmits(['search', 'reset'])
+
+defineProps<{
+  cardBorder: boolean
+}>()
 
 const { active } = useBreakpoints()
 const span = computed(() => {
